@@ -14,6 +14,9 @@ public class HabitLog
 
     public bool IsCompleted { get; set; } = true;
     public DateTime LoggedAt { get; set; } = DateTime.UtcNow;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+    public bool IsDeleted { get; set; } = false;
 
     // Navigation property
     public Habit? Habit { get; set; }

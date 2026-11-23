@@ -20,7 +20,7 @@ public class Habit
     public int CurrentStreak { get; set; } = 0;
     public int LongestStreak { get; set; } = 0;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public DateTime? UpdatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     public bool IsDeleted { get; set; } = false;
 
     // Navigation properties

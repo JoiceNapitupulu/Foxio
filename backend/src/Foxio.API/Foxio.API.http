@@ -1,6 +1,102 @@
-@Foxio.API_HostAddress = http://localhost:5188
+@baseUrl = http://localhost:5188
+@email = foxio.student@example.com
+@password = FoxioPass123!
 
-GET {{Foxio.API_HostAddress}}/weatherforecast/
-Accept: application/json
+### 1. Register a new student account
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}",
+  "displayName": "James Fox"
+}
+
+### 2. Login and capture JWT token
+# @name login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
 
 ###
+@token = {{login.response.body.token}}
+
+### 3a. Create Todo #1 (with deadline)
+# @name createTodo1
+POST {{baseUrl}}/api/todos
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Submit Calculus Assignment",
+  "description": "Chapter 4 exercises on integration",
+  "deadline": "2026-11-25T17:00:00Z"
+}
+
+###
+@todoId1 = {{createTodo1.response.body.id}}
+
+### 3b. Create Todo #2 (without deadline)
+# @name createTodo2
+POST {{baseUrl}}/api/todos
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Review Flutter Riverpod Notes",
+  "description": "Prepare for Week 2 offline sync"
+}
+
+### 4. Get all active Todos (sorted: incomplete -> nearest deadline -> nulls last)
+GET {{baseUrl}}/api/todos
+Authorization: Bearer {{token}}
+
+### 5. Update Todo #1
+PUT {{baseUrl}}/api/todos/{{todoId1}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Submit Calculus Assignment (Final)",
+  "description": "Double-check all 10 problems before uploading",
+  "deadline": "2026-11-26T17:00:00Z"
+}
+
+### 6. Complete Todo #1 (expect pointsEarned: 10, totalPoints: 10, level: 1)
+PATCH {{baseUrl}}/api/todos/{{todoId1}}/complete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "isCompleted": true
+}
+
+### 7a. Uncomplete Todo #1 (anti-farming test)
+PATCH {{baseUrl}}/api/todos/{{todoId1}}/complete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "isCompleted": false
+}
+
+### 7b. Complete Todo #1 again (expect pointsEarned: 0, totalPoints unchanged — no point farming!)
+PATCH {{baseUrl}}/api/todos/{{todoId1}}/complete
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "isCompleted": true
+}
+
+### 8. Soft delete Todo #1 (expect 204 NoContent)
+DELETE {{baseUrl}}/api/todos/{{todoId1}}
+Authorization: Bearer {{token}}
+
+### 9. Get all active Todos (verify Todo #1 is excluded)
+GET {{baseUrl}}/api/todos
+Authorization: Bearer {{token}}

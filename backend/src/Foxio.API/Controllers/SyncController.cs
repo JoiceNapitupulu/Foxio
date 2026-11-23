@@ -51,7 +51,7 @@ public class SyncController : BaseApiController
                 else
                 {
                     var clientUpdate = clientTodo.UpdatedAt ?? clientTodo.CreatedAt;
-                    var serverUpdate = existing.UpdatedAt ?? existing.CreatedAt;
+                    var serverUpdate = existing.UpdatedAt;
                     if (clientUpdate >= serverUpdate)
                     {
                         existing.Title = clientTodo.Title;
@@ -89,7 +89,7 @@ public class SyncController : BaseApiController
                 else
                 {
                     var clientUpdate = clientHabit.UpdatedAt ?? clientHabit.CreatedAt;
-                    var serverUpdate = existing.UpdatedAt ?? existing.CreatedAt;
+                    var serverUpdate = existing.UpdatedAt;
                     if (clientUpdate >= serverUpdate)
                     {
                         existing.Title = clientHabit.Title;
@@ -135,7 +135,7 @@ public class SyncController : BaseApiController
         var lastSync = request.LastSyncedAt ?? DateTime.MinValue;
 
         var serverTodos = await _context.Todos
-            .Where(t => t.UserId == userId && ((t.UpdatedAt ?? t.CreatedAt) > lastSync))
+            .Where(t => t.UserId == userId && t.UpdatedAt > lastSync)
             .Select(t => new TodoSyncItem(
                 t.Id,
                 t.Title,
@@ -149,7 +149,7 @@ public class SyncController : BaseApiController
             .ToListAsync();
 
         var serverHabits = await _context.Habits
-            .Where(h => h.UserId == userId && ((h.UpdatedAt ?? h.CreatedAt) > lastSync))
+            .Where(h => h.UserId == userId && h.UpdatedAt > lastSync)
             .Select(h => new HabitSyncItem(
                 h.Id,
                 h.Title,

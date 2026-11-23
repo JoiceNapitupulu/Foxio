@@ -78,7 +78,7 @@ public class StatsController : BaseApiController
         {
             var date = sevenDaysAgo.AddDays(i);
             var habitsCount = habitLogs.Count(hl => hl.Date == date);
-            var todosCount = completedTodos.Count(t => t.UpdatedAt.HasValue && DateOnly.FromDateTime(t.UpdatedAt.Value) == date);
+            var todosCount = completedTodos.Count(t => DateOnly.FromDateTime(t.UpdatedAt) == date);
 
             dailyStats.Add(new DailyStat(date, todosCount, habitsCount));
             totalCompleted += (habitsCount + todosCount);

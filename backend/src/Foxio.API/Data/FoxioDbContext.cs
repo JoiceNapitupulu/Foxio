@@ -24,27 +24,27 @@ public class FoxioDbContext : DbContext
             entity.HasIndex(u => u.Email).IsUnique();
         });
 
-        // Todo configuration
+        // Todo configuration (composite index for fast user queries & offline sync)
         modelBuilder.Entity<Todo>(entity =>
         {
-            entity.HasIndex(t => t.UserId);
+            entity.HasIndex(t => new { t.UserId, t.IsDeleted, t.UpdatedAt });
             entity.HasOne(t => t.User)
                   .WithMany(u => u.Todos)
                   .HasForeignKey(t => t.UserId)
                   .OnDelete(DeleteBehavior.Cascade);
         });
 
-        // Habit configuration
+        // Habit configuration (composite index for fast user queries & offline sync)
         modelBuilder.Entity<Habit>(entity =>
         {
-            entity.HasIndex(h => h.UserId);
+            entity.HasIndex(h => new { h.UserId, h.IsDeleted, h.UpdatedAt });
             entity.HasOne(h => h.User)
                   .WithMany(u => u.Habits)
                   .HasForeignKey(h => h.UserId)
                   .OnDelete(DeleteBehavior.Cascade);
         });
 
-        // HabitLog configuration
+        // HabitLog configuration (unique per Habit + Local DateOnly)
         modelBuilder.Entity<HabitLog>(entity =>
         {
             entity.HasIndex(hl => new { hl.HabitId, hl.Date }).IsUnique();
