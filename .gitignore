@@ -1,0 +1,24 @@
+# Visual Studio / .NET
+**/bin/
+**/obj/
+*.user
+*.suo
+.vs/
+.idea/
+.vscode/
+
+# Flutter / Dart
+**/mobile/.dart_tool/
+**/mobile/.flutter-plugins
+**/mobile/.flutter-plugins-dependencies
+**/mobile/.packages
+**/mobile/build/
+**/mobile/ios/Flutter/Generated.xcconfig
+**/mobile/ios/Flutter/app.framework
+**/mobile/android/.gradle
+**/mobile/android/local.properties
+
+# OS files
+Thumbs.db
+Desktop.ini
+.DS_Store
