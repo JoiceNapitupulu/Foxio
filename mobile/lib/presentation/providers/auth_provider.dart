@@ -1,13 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/network/dio_client.dart';
-import '../../data/models/user_model.dart';
-import '../../data/repositories/auth_repository.dart';
+import '../../data/repositories/auth_repository_impl.dart';
+import '../../domain/entities/user_entity.dart';
+import '../../domain/repositories/auth_repository.dart';
 
 enum AuthStatus { initial, loading, authenticated, unauthenticated }
 
 class AuthState {
   final AuthStatus status;
-  final UserModel? user;
+  final UserEntity? user;
   final String? errorMessage;
   final bool isSubmitting;
 
@@ -20,7 +21,7 @@ class AuthState {
 
   AuthState copyWith({
     AuthStatus? status,
-    UserModel? user,
+    UserEntity? user,
     String? errorMessage,
     bool? isSubmitting,
     bool clearError = false,
@@ -38,6 +39,12 @@ class AuthState {
 class AuthNotifier extends Notifier<AuthState> {
   @override
   AuthState build() {
+    // Automatically transition to unauthenticated if Dio receives 401
+    ref.listen<int>(unauthorizedEventProvider, (prev, next) {
+      if (prev != null && next > prev) {
+        state = const AuthState(status: AuthStatus.unauthenticated);
+      }
+    });
     return const AuthState();
   }
 
@@ -49,7 +56,10 @@ class AuthNotifier extends Notifier<AuthState> {
     if (user != null) {
       state = state.copyWith(status: AuthStatus.authenticated, user: user);
     } else {
-      state = state.copyWith(status: AuthStatus.unauthenticated, clearUser: true);
+      state = state.copyWith(
+        status: AuthStatus.unauthenticated,
+        clearUser: true,
+      );
     }
   }
 
@@ -121,6 +131,6 @@ class AuthNotifier extends Notifier<AuthState> {
   }
 }
 
-final authProvider = NotifierProvider<AuthNotifier, AuthState>(() {
-  return AuthNotifier();
-});
+final authProvider = NotifierProvider<AuthNotifier, AuthState>(
+  AuthNotifier.new,
+);

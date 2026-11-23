@@ -91,8 +91,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("AllowAll");
 
-// Note: In development with local mobile testing, HTTP/HTTPS redirection can be optional
-// app.UseHttpsRedirection();
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseAuthentication();
 app.UseAuthorization();

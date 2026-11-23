@@ -1,16 +1,12 @@
-class UserModel {
-  final String id;
-  final String email;
-  final String displayName;
-  final int level;
-  final int totalPoints;
+import '../../domain/entities/user_entity.dart';
 
+class UserModel extends UserEntity {
   const UserModel({
-    required this.id,
-    required this.email,
-    required this.displayName,
-    this.level = 1,
-    this.totalPoints = 0,
+    required super.id,
+    required super.email,
+    required super.displayName,
+    super.level = 1,
+    super.totalPoints = 0,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -31,21 +27,5 @@ class UserModel {
       'level': level,
       'totalPoints': totalPoints,
     };
-  }
-
-  UserModel copyWith({
-    String? id,
-    String? email,
-    String? displayName,
-    int? level,
-    int? totalPoints,
-  }) {
-    return UserModel(
-      id: id ?? this.id,
-      email: email ?? this.email,
-      displayName: displayName ?? this.displayName,
-      level: level ?? this.level,
-      totalPoints: totalPoints ?? this.totalPoints,
-    );
   }
 }

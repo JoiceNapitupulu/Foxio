@@ -3,11 +3,15 @@ import 'package:flutter/foundation.dart';
 class ApiConstants {
   ApiConstants._();
 
-  /// Base URL untuk backend ASP.NET Core (port 5188).
-  /// - Android Emulator mengakses localhost komputer via 10.0.2.2
-  /// - Web / Desktop mengakses langsung via localhost
-  /// - Jika testing pakai HP fisik, ganti ke IP LAN komputer (misal: http://192.168.1.10:5188/api)
+  static const String _envBaseUrl = String.fromEnvironment('API_BASE_URL');
+
+  /// Base URL untuk backend ASP.NET Core (port HTTP: 5188 dari launchSettings.json).
+  /// Dapat di-override saat build/run via:
+  /// `flutter run --dart-define=API_BASE_URL=http://192.168.1.10:5188/api`
   static String get baseUrl {
+    if (_envBaseUrl.isNotEmpty) {
+      return _envBaseUrl;
+    }
     if (kIsWeb) {
       return 'http://localhost:5188/api';
     }

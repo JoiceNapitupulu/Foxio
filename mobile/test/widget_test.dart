@@ -1,9 +1,9 @@
-import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:foxio_mobile/main.dart';
 
 void main() {
-  testWidgets('App smoke test', (WidgetTester tester) async {
+  testWidgets('Foxio app boots to SplashScreen', (WidgetTester tester) async {
     await tester.pumpWidget(
       const ProviderScope(
         child: FoxioApp(),
@@ -11,5 +11,6 @@ void main() {
     );
 
     expect(find.text('Foxio'), findsOneWidget);
+    expect(find.text('Grow your day, one task at a time'), findsOneWidget);
   });
 }
