@@ -47,6 +47,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IGamificationService, GamificationService>();
 builder.Services.AddEndpointsApiExplorer();
 
 // 4. Configure Swagger with JWT Bearer support
