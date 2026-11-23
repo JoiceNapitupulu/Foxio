@@ -1,32 +1,37 @@
 import 'package:material_ui/material_ui.dart';
 
+/// Foxio Color Palette — "Cozy Fox Paper"
+/// Referensi lengkap: docs/DESIGN_SYSTEM.md
 class AppColors {
   AppColors._();
 
   // Brand / Mascot Colors (Mini Fox)
-  static const Color primary = Color(0xFFFF7A45);       // Warm Fox Orange
-  static const Color primaryLight = Color(0xFFFFF1EB);  // Soft Peach Tint
-  static const Color primaryDark = Color(0xFFE65A24);   // Deep Fox Orange
-  static const Color secondary = Color(0xFFFBBF24);     // Cheerful Amber / Gold
-  static const Color secondaryLight = Color(0xFFFEF3C7);
+  static const Color primary = Color(0xFFE07A5F);        // Muted Fox Terracotta
+  static const Color primaryLight = Color(0xFFFBECE7);   // Blush Peach
+  static const Color primaryDark = Color(0xFFC86248);    // Deep Terracotta
 
-  // Background & Surfaces
-  static const Color background = Color(0xFFFBFBFC);    // Soft Clean Off-White
-  static const Color surface = Color(0xFFFFFFFF);       // Card White
-  static const Color surfaceVariant = Color(0xFFF1F5F9);
+  // Growth & Gamification
+  static const Color secondary = Color(0xFF81B29A);      // Muted Sage Green
+  static const Color secondaryLight = Color(0xFFEAF4EE); // Mint Whisper
+  static const Color streak = Color(0xFFE9B872);         // Warm Honey
+  static const Color streakLight = Color(0xFFFDF5E6);    // Butter Cream
 
-  // Text Colors
-  static const Color textPrimary = Color(0xFF0F172A);   // Dark Slate
-  static const Color textSecondary = Color(0xFF475569); // Medium Slate
-  static const Color textMuted = Color(0xFF94A3B8);     // Light Slate
+  // Backgrounds & Surfaces (Warm Digital Paper)
+  static const Color background = Color(0xFFFAF7F2);     // Warm Paper Cream
+  static const Color surface = Color(0xFFFFFFFF);        // Pure Warm White
+  static const Color surfaceVariant = Color(0xFFF3EDE4); // Soft Sand
 
-  // Status & Gamification
-  static const Color streak = Color(0xFFF59E0B);        // Flame / Streak Amber
-  static const Color success = Color(0xFF10B981);       // Habit Success Green
-  static const Color error = Color(0xFFEF4444);         // Soft Red
-  static const Color info = Color(0xFF3B82F6);          // Blue
+  // Typography (Warm Neutrals)
+  static const Color textPrimary = Color(0xFF2F2A26);    // Warm Charcoal
+  static const Color textSecondary = Color(0xFF78716C);  // Warm Taupe
+  static const Color textMuted = Color(0xFFA8A29E);      // Soft Stone
+
+  // Semantic Status
+  static const Color success = Color(0xFF81B29A);        // Muted Sage Green
+  static const Color error = Color(0xFFD66853);          // Dusty Coral
+  static const Color info = Color(0xFF6B9AC4);           // Soft Slate Blue
 
   // Borders & Dividers
-  static const Color border = Color(0xFFE2E8F0);
-  static const Color borderSubtle = Color(0xFFF1F5F9);
+  static const Color border = Color(0xFFE7E0D6);         // Warm Oat
+  static const Color borderSubtle = Color(0xFFEFEAE2);   // Soft Linen
 }

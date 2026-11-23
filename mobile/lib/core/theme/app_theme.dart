@@ -1,5 +1,5 @@
-import 'package:material_ui/material_ui.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:material_ui/material_ui.dart';
 import 'app_colors.dart';
 
 class AppTheme {
@@ -20,6 +20,8 @@ class AppTheme {
         onPrimaryContainer: AppColors.primaryDark,
         secondary: AppColors.secondary,
         onSecondary: Colors.white,
+        secondaryContainer: AppColors.secondaryLight,
+        onSecondaryContainer: AppColors.textPrimary,
         surface: AppColors.surface,
         onSurface: AppColors.textPrimary,
         error: AppColors.error,
@@ -52,42 +54,42 @@ class AppTheme {
       ),
 
       // App Bar Theme
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         backgroundColor: AppColors.background,
         elevation: 0,
         scrolledUnderElevation: 0,
         centerTitle: false,
-        iconTheme: IconThemeData(color: AppColors.textPrimary),
-        titleTextStyle: TextStyle(
+        iconTheme: const IconThemeData(color: AppColors.textPrimary),
+        titleTextStyle: GoogleFonts.inter(
           color: AppColors.textPrimary,
           fontSize: 20,
           fontWeight: FontWeight.w700,
         ),
       ),
 
-      // Card Theme
+      // Card Theme (Warm Paper Surface)
       cardTheme: CardThemeData(
         color: AppColors.surface,
         elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(18),
           side: const BorderSide(color: AppColors.borderSubtle, width: 1),
         ),
         margin: EdgeInsets.zero,
       ),
 
-      // Elevated Button Theme (Soft Pill/Rounded look)
+      // Elevated Button Theme (Soft Rounded)
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
           foregroundColor: Colors.white,
           elevation: 0,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 15),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),
           textStyle: GoogleFonts.inter(
-            fontSize: 16,
+            fontSize: 15,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -97,21 +99,21 @@ class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: AppColors.surface,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(14),
           borderSide: const BorderSide(color: AppColors.border),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(14),
           borderSide: const BorderSide(color: AppColors.border),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(14),
           borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(14),
           borderSide: const BorderSide(color: AppColors.error),
         ),
         hintStyle: GoogleFonts.inter(
@@ -120,16 +122,22 @@ class AppTheme {
         ),
       ),
 
-      // Checkbox Theme (Rounded for habits & todos)
+      // Checkbox Theme (Muted Sage Green when checked)
       checkboxTheme: CheckboxThemeData(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
         fillColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return AppColors.primary;
+            return AppColors.secondary;
           }
           return Colors.transparent;
         }),
         side: const BorderSide(color: AppColors.border, width: 1.5),
+      ),
+
+      // Divider Theme
+      dividerTheme: const DividerThemeData(
+        color: AppColors.borderSubtle,
+        thickness: 1,
       ),
     );
   }
