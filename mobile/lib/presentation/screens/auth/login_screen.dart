@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../../../core/constants/app_assets.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../providers/auth_provider.dart';
@@ -96,7 +95,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               controller: _emailController,
                               label: 'Email',
                               hintText: 'nama@kampus.ac.id',
-                              prefixIcon: PhosphorIconsRegular.envelopeSimple,
+                              prefixIcon: Icons.mail_outline_rounded,
                               keyboardType: TextInputType.emailAddress,
                               textInputAction: TextInputAction.next,
                               validator: (val) {
@@ -115,7 +114,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               controller: _passwordController,
                               label: 'Password',
                               hintText: 'Masukkan password Anda',
-                              prefixIcon: PhosphorIconsRegular.lockSimple,
+                              prefixIcon: Icons.lock_outline_rounded,
                               isPassword: true,
                               textInputAction: TextInputAction.done,
                               onFieldSubmitted: (_) => _submit(),

@@ -1,5 +1,4 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../../core/theme/app_colors.dart';
 
 class CozyTextField extends StatefulWidget {
@@ -67,8 +66,8 @@ class _CozyTextFieldState extends State<CozyTextField> {
                 ? IconButton(
                     icon: Icon(
                       _obscureText
-                          ? PhosphorIconsRegular.eye
-                          : PhosphorIconsRegular.eyeSlash,
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
                       color: AppColors.textMuted,
                       size: 20,
                     ),

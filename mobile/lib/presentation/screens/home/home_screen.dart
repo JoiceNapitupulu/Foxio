@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../../../core/constants/app_assets.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../providers/auth_provider.dart';
+import '../../widgets/minifox_3d_card.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -66,7 +66,7 @@ class HomeScreen extends ConsumerWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         const Icon(
-                          PhosphorIconsFill.star,
+                          Icons.star_rounded,
                           color: AppColors.streak,
                           size: 16,
                         ),
@@ -87,52 +87,8 @@ class HomeScreen extends ConsumerWidget {
 
               const SizedBox(height: 20),
 
-              // Cozy Mini Fox Companion Card
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 84,
-                        height: 84,
-                        decoration: const BoxDecoration(
-                          color: AppColors.primaryLight,
-                          shape: BoxShape.circle,
-                        ),
-                        padding: const EdgeInsets.all(8),
-                        child: Image.asset(
-                          AppAssets.foxIdle,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Mini Fox is cheering for you!',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium
-                                  ?.copyWith(fontSize: 15.5),
-                            ),
-                            const SizedBox(height: 6),
-                            Text(
-                              'Complete a task (+10 pts) or habit (+15 pts) to help your sprout grow.',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(fontSize: 13.5, height: 1.4),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              // Interactive 3D Mini Fox Companion Card
+              const MiniFox3dCard(),
 
               const SizedBox(height: 24),
 

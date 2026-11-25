@@ -1,6 +1,5 @@
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../../../core/theme/app_colors.dart';
 
 class MainShellScreen extends StatelessWidget {
@@ -42,47 +41,47 @@ class MainShellScreen extends StatelessWidget {
             labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
             selectedIndex: currentIndex,
             onDestinationSelected: _onTap,
-            destinations: [
+            destinations: const [
               NavigationDestination(
-                icon: const Icon(
-                  PhosphorIconsRegular.house,
+                icon: Icon(
+                  Icons.home_outlined,
                   color: AppColors.textMuted,
                 ),
-                selectedIcon: const Icon(
-                  PhosphorIconsFill.house,
+                selectedIcon: Icon(
+                  Icons.home_rounded,
                   color: AppColors.primary,
                 ),
                 label: 'Today',
               ),
               NavigationDestination(
-                icon: const Icon(
-                  PhosphorIconsRegular.calendarBlank,
+                icon: Icon(
+                  Icons.calendar_today_outlined,
                   color: AppColors.textMuted,
                 ),
-                selectedIcon: const Icon(
-                  PhosphorIconsFill.calendarBlank,
+                selectedIcon: Icon(
+                  Icons.calendar_today_rounded,
                   color: AppColors.primary,
                 ),
                 label: 'Calendar',
               ),
               NavigationDestination(
-                icon: const Icon(
-                  PhosphorIconsRegular.chartBar,
+                icon: Icon(
+                  Icons.bar_chart_outlined,
                   color: AppColors.textMuted,
                 ),
-                selectedIcon: const Icon(
-                  PhosphorIconsFill.chartBar,
+                selectedIcon: Icon(
+                  Icons.bar_chart_rounded,
                   color: AppColors.primary,
                 ),
                 label: 'Stats',
               ),
               NavigationDestination(
-                icon: const Icon(
-                  PhosphorIconsRegular.userCircle,
+                icon: Icon(
+                  Icons.account_circle_outlined,
                   color: AppColors.textMuted,
                 ),
-                selectedIcon: const Icon(
-                  PhosphorIconsFill.userCircle,
+                selectedIcon: Icon(
+                  Icons.account_circle_rounded,
                   color: AppColors.primary,
                 ),
                 label: 'Profile',

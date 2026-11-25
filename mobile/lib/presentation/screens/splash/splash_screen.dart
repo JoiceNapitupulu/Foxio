@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
 import '../../../core/constants/app_assets.dart';
@@ -16,6 +17,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   late final AnimationController _controller;
   late final Animation<double> _fadeAnimation;
   late final Animation<double> _scaleAnimation;
+  Timer? _bootTimer;
 
   @override
   void initState() {
@@ -34,16 +36,19 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
 
     _controller.forward();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Future.delayed(const Duration(milliseconds: 900));
-      if (mounted) {
-        await ref.read(authProvider.notifier).checkAuthStatus();
-      }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      _bootTimer = Timer(const Duration(milliseconds: 900), () {
+        if (mounted) {
+          ref.read(authProvider.notifier).checkAuthStatus();
+        }
+      });
     });
   }
 
   @override
   void dispose() {
+    _bootTimer?.cancel();
     _controller.dispose();
     super.dispose();
   }

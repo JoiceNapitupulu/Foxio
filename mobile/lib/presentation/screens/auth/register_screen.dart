@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../../../core/constants/app_assets.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../providers/auth_provider.dart';
@@ -99,7 +98,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               controller: _displayNameController,
                               label: 'Nama Panggilan',
                               hintText: 'Contoh: James',
-                              prefixIcon: PhosphorIconsRegular.user,
+                              prefixIcon: Icons.person_outline_rounded,
                               textInputAction: TextInputAction.next,
                               validator: (val) {
                                 final text = val?.trim() ?? '';
@@ -117,7 +116,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               controller: _emailController,
                               label: 'Email',
                               hintText: 'nama@kampus.ac.id',
-                              prefixIcon: PhosphorIconsRegular.envelopeSimple,
+                              prefixIcon: Icons.mail_outline_rounded,
                               keyboardType: TextInputType.emailAddress,
                               textInputAction: TextInputAction.next,
                               validator: (val) {
@@ -136,7 +135,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                               controller: _passwordController,
                               label: 'Password',
                               hintText: 'Minimal 6 karakter',
-                              prefixIcon: PhosphorIconsRegular.lockSimple,
+                              prefixIcon: Icons.lock_outline_rounded,
                               isPassword: true,
                               textInputAction: TextInputAction.done,
                               onFieldSubmitted: (_) => _submit(),

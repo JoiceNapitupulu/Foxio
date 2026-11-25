@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../../../core/constants/app_assets.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../providers/auth_provider.dart';
@@ -56,7 +55,7 @@ class ProfileScreen extends ConsumerWidget {
                         children: [
                           Expanded(
                             child: _StatTile(
-                              icon: PhosphorIconsFill.crownSimple,
+                              icon: Icons.workspace_premium_rounded,
                               iconColor: AppColors.streak,
                               bgColor: AppColors.streakLight,
                               label: 'Level',
@@ -66,7 +65,7 @@ class ProfileScreen extends ConsumerWidget {
                           const SizedBox(width: 12),
                           Expanded(
                             child: _StatTile(
-                              icon: PhosphorIconsFill.sparkle,
+                              icon: Icons.auto_awesome_rounded,
                               iconColor: AppColors.secondary,
                               bgColor: AppColors.secondaryLight,
                               label: 'Total Points',

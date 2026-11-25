@@ -1,5 +1,4 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 import '../../core/theme/app_colors.dart';
 
 class CozyErrorBanner extends StatelessWidget {
@@ -24,7 +23,7 @@ class CozyErrorBanner extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Icon(
-            PhosphorIconsRegular.warningCircle,
+            Icons.error_outline_rounded,
             color: AppColors.error,
             size: 20,
           ),
