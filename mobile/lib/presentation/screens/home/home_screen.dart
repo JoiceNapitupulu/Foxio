@@ -259,6 +259,7 @@ class HomeScreen extends ConsumerWidget {
                               child: Image.asset(
                                 AppAssets.foxEmpty,
                                 fit: BoxFit.contain,
+                                cacheWidth: 360,
                               ),
                             ),
                             const SizedBox(height: 10),

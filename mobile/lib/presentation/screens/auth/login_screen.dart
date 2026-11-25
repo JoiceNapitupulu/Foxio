@@ -62,6 +62,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     child: Image.asset(
                       AppAssets.foxIdle,
                       fit: BoxFit.contain,
+                      cacheWidth: 360,
                     ),
                   ),
                   const SizedBox(height: 18),

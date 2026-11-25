@@ -1,22 +1,18 @@
-import 'package:flutter/foundation.dart';
-
 class ApiConstants {
   ApiConstants._();
 
   static const String _envBaseUrl = String.fromEnvironment('API_BASE_URL');
 
   /// Base URL untuk backend ASP.NET Core (port HTTP: 5188 dari launchSettings.json).
-  /// Dapat di-override saat build/run via:
-  /// `flutter run --dart-define=API_BASE_URL=http://192.168.1.10:5188/api`
+  /// - Chrome / Desktop: langsung mengakses http://localhost:5188/api
+  /// - HP Android Fisik via Kabel USB: menggunakan `adb reverse tcp:5188 tcp:5188`
+  ///   (otomatis dijalankan oleh start-foxio.bat) sehingga http://localhost:5188/api
+  ///   di HP langsung terhubung ke laptop lewat kabel USB.
+  /// - HP Android via Wi-Fi (tanpa kabel): override saat build/run dengan:
+  ///   `flutter run --dart-define=API_BASE_URL=http://<IP_LAPTOP>:5188/api`
   static String get baseUrl {
     if (_envBaseUrl.isNotEmpty) {
       return _envBaseUrl;
-    }
-    if (kIsWeb) {
-      return 'http://localhost:5188/api';
-    }
-    if (defaultTargetPlatform == TargetPlatform.android) {
-      return 'http://10.0.2.2:5188/api';
     }
     return 'http://localhost:5188/api';
   }

@@ -19,7 +19,11 @@ class StatsScreen extends StatelessWidget {
               SizedBox(
                 width: 150,
                 height: 150,
-                child: Image.asset(AppAssets.foxEmpty, fit: BoxFit.contain),
+                child: Image.asset(
+                  AppAssets.foxEmpty,
+                  fit: BoxFit.contain,
+                  cacheWidth: 450,
+                ),
               ),
               const SizedBox(height: 16),
               Text(

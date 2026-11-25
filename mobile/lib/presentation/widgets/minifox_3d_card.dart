@@ -260,6 +260,7 @@ class _MiniFox3dCardState extends State<MiniFox3dCard>
                                     ? AppAssets.foxLevelUp
                                     : AppAssets.foxExcited,
                                 fit: BoxFit.contain,
+                                cacheWidth: 512,
                               ),
                             ),
                           )
@@ -306,6 +307,7 @@ class _MiniFox3dCardState extends State<MiniFox3dCard>
                                     child: Image.asset(
                                       AppAssets.foxIdle,
                                       fit: BoxFit.contain,
+                                      cacheWidth: 512,
                                     ),
                                   ),
                                 ),

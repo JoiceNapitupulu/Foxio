@@ -36,6 +36,7 @@ class ProfileScreen extends ConsumerWidget {
                         child: Image.asset(
                           AppAssets.foxIdle,
                           fit: BoxFit.contain,
+                          cacheWidth: 320,
                         ),
                       ),
                       const SizedBox(height: 14),

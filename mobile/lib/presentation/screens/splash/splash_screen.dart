@@ -86,6 +86,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
                       child: Image.asset(
                         AppAssets.foxIdle,
                         fit: BoxFit.contain,
+                        cacheWidth: 450,
                       ),
                     ),
                     const SizedBox(height: 28),

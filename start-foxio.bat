@@ -1,10 +1,11 @@
 @echo off
+setlocal EnableDelayedExpansion
 title Foxio Dev Launcher
 color 0E
 
 echo ==================================================
-echo   FOXIO - All-in-One Dev Launcher
-echo   Backend API + Android Emulator + Flutter App
+echo   FOXIO - Lightweight Dev Launcher
+echo   Backend API + HP Android (USB) / Chrome Preview
 echo ==================================================
 echo.
 
@@ -12,37 +13,42 @@ REM Pastikan semua path SDK terbaca saat dijalankan lewat klik 2x
 set "DOTNET_DIR=%USERPROFILE%\.dotnet"
 set "FLUTTER_BIN=%USERPROFILE%\flutter\bin"
 set "ANDROID_SDK=%LOCALAPPDATA%\Android\Sdk"
-set "PATH=%DOTNET_DIR%;%FLUTTER_BIN%;%ANDROID_SDK%\platform-tools;%ANDROID_SDK%\emulator;%PATH%"
+set "PATH=%DOTNET_DIR%;%FLUTTER_BIN%;%ANDROID_SDK%\platform-tools;%PATH%"
 
-REM 1. Jalankan Backend ASP.NET Core di jendela terpisah
-echo [1/3] Menyalakan Foxio Backend API (http://localhost:5188)...
-start "Foxio Backend API" cmd /k "cd /d d:\DummyProject\Foxio\backend\src\Foxio.API && set PATH=%DOTNET_DIR%;%PATH% && dotnet watch run"
-
-REM 2. Cek apakah Emulator Android sudah menyala; jika belum, jalankan
-echo [2/3] Memeriksa Android Emulator (medium_phone)...
-adb devices | findstr /R /C:"emulator-[0-9]*[	 ]*device" >nul 2>&1
+REM 1. Jalankan Backend ASP.NET Core di jendela terpisah jika port 5188 belum aktif
+netstat -ano | findstr /R /C:":5188 .*LISTENING" >nul 2>&1
 if errorlevel 1 (
-    echo       Menyalakan emulator medium_phone...
-    start "" /b cmd /c "flutter emulators --launch medium_phone"
-    echo       Menunggu Android Emulator selesai booting...
-    adb wait-for-device
-    :wait_boot
-    for /f "delims=" %%i in ('adb shell getprop sys.boot_completed 2^>nul') do set "BOOTED=%%i"
-    if not "%BOOTED%"=="1" (
-        timeout /t 3 /nobreak >nul
-        goto wait_boot
-    )
-    echo       Android Emulator siap!
+    echo [1/3] Menyalakan Foxio Backend API (http://localhost:5188)...
+    start "Foxio Backend API" cmd /k "cd /d d:\DummyProject\Foxio\backend\src\Foxio.API && set PATH=%DOTNET_DIR%;%PATH% && dotnet watch run"
 ) else (
-    echo       Android Emulator sudah aktif!
+    echo [1/3] Foxio Backend API sudah aktif di port 5188.
 )
 
-REM 3. Jalankan Flutter App di jendela ini (tekan r = Hot Reload, R = Hot Restart, q = Quit)
-echo.
-echo [3/3] Menjalankan Flutter App Foxio ke Emulator...
-echo       (Tips: tekan 'r' untuk Hot Reload, 'R' untuk Hot Restart, 'q' untuk berhenti)
-echo.
+REM 2. Deteksi HP Android fisik yang terhubung lewat kabel USB
+set "USB_DEVICE="
+for /f "skip=1 tokens=1,2" %%A in ('adb devices 2^>nul') do (
+    if "%%B"=="device" (
+        set "USB_DEVICE=%%A"
+        goto :device_found
+    )
+)
+
+:device_found
 cd /d d:\DummyProject\Foxio\mobile
-flutter run
+
+if defined USB_DEVICE (
+    echo [2/3] HP Android fisik terdeteksi ^(!USB_DEVICE!^)! Mengaktifkan USB tunnel ^(adb reverse tcp:5188 tcp:5188^)...
+    adb -s !USB_DEVICE! reverse tcp:5188 tcp:5188
+    echo [3/3] Menjalankan Foxio ke HP Android fisik...
+    echo       ^(Tips: tekan 'r' = Hot Reload, 'R' = Hot Restart, 'q' = berhenti^)
+    echo.
+    flutter run -d !USB_DEVICE!
+) else (
+    echo [2/3] Tidak ada HP USB terdeteksi -^> Membuka Preview Ringan di Chrome ^(ukuran layar HP^)...
+    echo [3/3] Menjalankan Foxio di Chrome...
+    echo       ^(Tips: tekan 'r' = Hot Reload, 'R' = Hot Restart, 'q' = berhenti^)
+    echo.
+    flutter run -d chrome --web-browser-flag="--window-size=430,900"
+)
 
 pause

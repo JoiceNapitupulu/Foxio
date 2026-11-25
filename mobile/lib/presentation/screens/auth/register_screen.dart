@@ -65,6 +65,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     child: Image.asset(
                       AppAssets.foxExcited,
                       fit: BoxFit.contain,
+                      cacheWidth: 360,
                     ),
                   ),
                   const SizedBox(height: 16),
