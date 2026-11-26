@@ -265,11 +265,15 @@ class _MiniFox3dCardState extends State<MiniFox3dCard>
                             ),
                           )
                         : (_is3dEnabled
-                            ? const SizedBox.expand(
-                                key: ValueKey<String>('3d_idle'),
+                            ? SizedBox.expand(
+                                key: const ValueKey<String>('3d_idle'),
                                 child: ModelViewer(
-                                  src: AppAssets.fox3dIdle,
-                                  poster: AppAssets.foxIdle,
+                                  src: kIsWeb
+                                      ? 'assets/${AppAssets.fox3dIdle}'
+                                      : AppAssets.fox3dIdle,
+                                  poster: kIsWeb
+                                      ? 'assets/${AppAssets.foxIdle}'
+                                      : null,
                                   alt: 'Mini Fox 3D Companion',
                                   autoPlay: true,
                                   cameraControls: true,

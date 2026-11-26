@@ -1,16 +1,22 @@
-import 'package:google_fonts/google_fonts.dart';
 import 'package:material_ui/material_ui.dart';
 import 'app_colors.dart';
 
 class AppTheme {
   AppTheme._();
 
+  static const String fontFamily = 'Inter';
+
   static ThemeData get lightTheme {
-    final baseTextTheme = GoogleFonts.interTextTheme();
+    final baseTextTheme = ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.light,
+      fontFamily: fontFamily,
+    ).textTheme;
 
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
+      fontFamily: fontFamily,
       primaryColor: AppColors.primary,
       scaffoldBackgroundColor: AppColors.background,
       colorScheme: const ColorScheme.light(
@@ -60,7 +66,8 @@ class AppTheme {
         scrolledUnderElevation: 0,
         centerTitle: false,
         iconTheme: const IconThemeData(color: AppColors.textPrimary),
-        titleTextStyle: GoogleFonts.inter(
+        titleTextStyle: const TextStyle(
+          fontFamily: fontFamily,
           color: AppColors.textPrimary,
           fontSize: 20,
           fontWeight: FontWeight.w700,
@@ -88,7 +95,8 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),
-          textStyle: GoogleFonts.inter(
+          textStyle: const TextStyle(
+            fontFamily: fontFamily,
             fontSize: 15,
             fontWeight: FontWeight.w600,
           ),
@@ -116,7 +124,8 @@ class AppTheme {
           borderRadius: BorderRadius.circular(14),
           borderSide: const BorderSide(color: AppColors.error),
         ),
-        hintStyle: GoogleFonts.inter(
+        hintStyle: const TextStyle(
+          fontFamily: fontFamily,
           color: AppColors.textMuted,
           fontSize: 14,
         ),
