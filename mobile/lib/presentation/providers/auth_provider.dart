@@ -11,12 +11,14 @@ class AuthState {
   final UserEntity? user;
   final String? errorMessage;
   final bool isSubmitting;
+  final bool isUpdatingAvatar;
 
   const AuthState({
     this.status = AuthStatus.initial,
     this.user,
     this.errorMessage,
     this.isSubmitting = false,
+    this.isUpdatingAvatar = false,
   });
 
   AuthState copyWith({
@@ -24,6 +26,7 @@ class AuthState {
     UserEntity? user,
     String? errorMessage,
     bool? isSubmitting,
+    bool? isUpdatingAvatar,
     bool clearError = false,
     bool clearUser = false,
   }) {
@@ -32,6 +35,7 @@ class AuthState {
       user: clearUser ? null : (user ?? this.user),
       errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
       isSubmitting: isSubmitting ?? this.isSubmitting,
+      isUpdatingAvatar: isUpdatingAvatar ?? this.isUpdatingAvatar,
     );
   }
 }
@@ -106,6 +110,46 @@ class AuthNotifier extends Notifier<AuthState> {
     } catch (e) {
       state = state.copyWith(
         isSubmitting: false,
+        errorMessage: DioClient.parseErrorMessage(e),
+      );
+      return false;
+    }
+  }
+
+  Future<bool> updateAvatar({
+    String? avatarData,
+    bool clearAvatar = false,
+  }) async {
+    final currentUser = state.user;
+    if (currentUser == null) return false;
+
+    final nextAvatar = clearAvatar ? null : avatarData?.trim();
+    final optimisticUser = currentUser.copyWith(
+      avatarData: nextAvatar,
+      clearAvatar: clearAvatar || nextAvatar == null,
+    );
+
+    state = state.copyWith(
+      user: optimisticUser,
+      isUpdatingAvatar: true,
+      clearError: true,
+    );
+
+    try {
+      final updated = await _repo.updateAvatar(
+        currentUser: currentUser,
+        avatarData: nextAvatar,
+        clearAvatar: clearAvatar,
+      );
+      state = state.copyWith(
+        user: updated,
+        isUpdatingAvatar: false,
+      );
+      return true;
+    } catch (e) {
+      state = state.copyWith(
+        user: currentUser,
+        isUpdatingAvatar: false,
         errorMessage: DioClient.parseErrorMessage(e),
       );
       return false;

@@ -14,5 +14,11 @@ abstract class AuthRepository {
 
   Future<UserEntity?> restoreSession();
 
+  Future<UserEntity> updateAvatar({
+    required UserEntity currentUser,
+    String? avatarData,
+    bool clearAvatar = false,
+  });
+
   Future<void> logout();
 }

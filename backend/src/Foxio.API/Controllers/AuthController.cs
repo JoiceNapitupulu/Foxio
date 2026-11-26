@@ -53,7 +53,8 @@ public class AuthController : ControllerBase
             user.DisplayName,
             user.Level,
             user.TotalPoints,
-            token
+            token,
+            user.AvatarData
         ));
     }
 
@@ -76,7 +77,8 @@ public class AuthController : ControllerBase
             user.DisplayName,
             user.Level,
             user.TotalPoints,
-            token
+            token,
+            user.AvatarData
         ));
     }
 
@@ -102,7 +104,58 @@ public class AuthController : ControllerBase
             user.DisplayName,
             user.Level,
             user.TotalPoints,
-            user.CreatedAt
+            user.CreatedAt,
+            user.AvatarData
+        ));
+    }
+
+    [Authorize]
+    [HttpPut("profile")]
+    public async Task<ActionResult<UserProfileResponse>> UpdateProfile([FromBody] UpdateProfileRequest request)
+    {
+        var userIdStr = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userIdStr) || !Guid.TryParse(userIdStr, out var userId))
+        {
+            return Unauthorized();
+        }
+
+        var user = await _context.Users.FindAsync(userId);
+        if (user == null)
+        {
+            return NotFound(new { message = "User tidak ditemukan." });
+        }
+
+        if (!string.IsNullOrWhiteSpace(request.DisplayName))
+        {
+            user.DisplayName = request.DisplayName.Trim();
+        }
+
+        if (request.ClearAvatar)
+        {
+            user.AvatarData = null;
+        }
+        else if (request.AvatarData != null)
+        {
+            if (request.AvatarData.Length > 700_000)
+            {
+                return BadRequest(new { message = "Ukuran foto profil terlalu besar." });
+            }
+
+            user.AvatarData = string.IsNullOrWhiteSpace(request.AvatarData)
+                ? null
+                : request.AvatarData.Trim();
+        }
+
+        await _context.SaveChangesAsync();
+
+        return Ok(new UserProfileResponse(
+            user.Id,
+            user.Email,
+            user.DisplayName,
+            user.Level,
+            user.TotalPoints,
+            user.CreatedAt,
+            user.AvatarData
         ));
     }
 }

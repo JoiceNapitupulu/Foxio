@@ -19,7 +19,8 @@ public record AuthResponse(
     string DisplayName,
     int Level,
     int TotalPoints,
-    string Token
+    string Token,
+    string? AvatarData = null
 );
 
 public record UserProfileResponse(
@@ -28,5 +29,12 @@ public record UserProfileResponse(
     string DisplayName,
     int Level,
     int TotalPoints,
-    DateTime CreatedAt
+    DateTime CreatedAt,
+    string? AvatarData = null
+);
+
+public record UpdateProfileRequest(
+    [MaxLength(100)] string? DisplayName,
+    string? AvatarData,
+    bool ClearAvatar = false
 );

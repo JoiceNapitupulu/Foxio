@@ -51,6 +51,32 @@ class LocalStorageService {
     return null;
   }
 
+  String _avatarKey(String userId) => 'avatar_$userId';
+  String _avatarDirtyKey(String userId) => 'avatar_dirty_$userId';
+
+  Future<void> saveUserAvatar(
+    String userId,
+    String? avatarData, {
+    bool isDirty = false,
+  }) async {
+    if (avatarData == null || avatarData.trim().isEmpty) {
+      await _authBox.delete(_avatarKey(userId));
+    } else {
+      await _authBox.put(_avatarKey(userId), avatarData.trim());
+    }
+    await _authBox.put(_avatarDirtyKey(userId), isDirty);
+  }
+
+  String? getUserAvatar(String userId) {
+    final raw = _authBox.get(_avatarKey(userId)) as String?;
+    if (raw == null || raw.trim().isEmpty) return null;
+    return raw;
+  }
+
+  bool isUserAvatarDirty(String userId) {
+    return _authBox.get(_avatarDirtyKey(userId)) == true;
+  }
+
   // --- Sync Metadata ---
 
   Future<void> saveLastSyncedAt(DateTime timestamp) async {

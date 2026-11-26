@@ -49,6 +49,28 @@ class AuthRemoteDataSource {
       throw ApiException.fromDioException(e);
     }
   }
+
+  Future<UserModel> updateProfile({
+    String? displayName,
+    String? avatarData,
+    bool clearAvatar = false,
+  }) async {
+    try {
+      final response = await _client.dio.put(
+        ApiConstants.updateProfile,
+        data: {
+          if (displayName != null) 'displayName': displayName.trim(),
+          if (!clearAvatar && avatarData != null) 'avatarData': avatarData,
+          'clearAvatar': clearAvatar,
+        },
+      );
+      return UserModel.fromJson(
+        Map<String, dynamic>.from(response.data as Map),
+      );
+    } on DioException catch (e) {
+      throw ApiException.fromDioException(e);
+    }
+  }
 }
 
 final authRemoteDataSourceProvider = Provider<AuthRemoteDataSource>((ref) {

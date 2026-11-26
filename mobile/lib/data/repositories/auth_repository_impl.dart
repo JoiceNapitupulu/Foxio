@@ -28,7 +28,12 @@ class AuthRepositoryImpl implements AuthRepository {
       LoginRequestModel(email: email, password: password),
     );
     await _secureStorage.saveToken(result.token);
-    await _secureStorage.saveUserJson(result.user.toJson());
+    await _secureStorage.saveUserJson(result.user.toJson(includeAvatar: false));
+    await _localStorage.saveUserAvatar(
+      result.user.id,
+      result.user.avatarData,
+      isDirty: false,
+    );
     return result.user;
   }
 
@@ -46,8 +51,55 @@ class AuthRepositoryImpl implements AuthRepository {
       ),
     );
     await _secureStorage.saveToken(result.token);
-    await _secureStorage.saveUserJson(result.user.toJson());
+    await _secureStorage.saveUserJson(result.user.toJson(includeAvatar: false));
+    await _localStorage.saveUserAvatar(
+      result.user.id,
+      result.user.avatarData,
+      isDirty: false,
+    );
     return result.user;
+  }
+
+  Future<UserEntity> _syncAvatarWithLocal(UserModel remoteUser) async {
+    if (_localStorage.isUserAvatarDirty(remoteUser.id)) {
+      final localAvatar = _localStorage.getUserAvatar(remoteUser.id);
+      try {
+        final synced = await _remote.updateProfile(
+          avatarData: localAvatar,
+          clearAvatar: localAvatar == null,
+        );
+        await _localStorage.saveUserAvatar(
+          synced.id,
+          synced.avatarData,
+          isDirty: false,
+        );
+        return synced;
+      } catch (_) {
+        return remoteUser.copyWith(
+          avatarData: localAvatar,
+          clearAvatar: localAvatar == null,
+        );
+      }
+    }
+
+    await _localStorage.saveUserAvatar(
+      remoteUser.id,
+      remoteUser.avatarData,
+      isDirty: false,
+    );
+    return remoteUser;
+  }
+
+  UserEntity _hydrateOfflineUser(Map<String, dynamic> cachedJson) {
+    final cached = UserModel.fromJson(cachedJson);
+    final localAvatar = _localStorage.getUserAvatar(cached.id);
+    if (_localStorage.isUserAvatarDirty(cached.id)) {
+      return cached.copyWith(
+        avatarData: localAvatar,
+        clearAvatar: localAvatar == null,
+      );
+    }
+    return cached.copyWith(avatarData: localAvatar ?? cached.avatarData);
   }
 
   @override
@@ -60,23 +112,61 @@ class AuthRepositoryImpl implements AuthRepository {
     final cachedJson = await _secureStorage.getUserJson();
     try {
       final user = await _remote.getCurrentUser();
-      await _secureStorage.saveUserJson(user.toJson());
-      return user;
+      await _secureStorage.saveUserJson(user.toJson(includeAvatar: false));
+      return await _syncAvatarWithLocal(user);
     } on ApiException catch (e) {
       if (e.statusCode == 401) {
         await _secureStorage.clearAll();
+        await _localStorage.clearAll();
         return null;
       }
       // Offline-first fallback: allow entry if we have cached user profile
       if (cachedJson != null) {
-        return UserModel.fromJson(cachedJson);
+        return _hydrateOfflineUser(cachedJson);
       }
       return null;
     } catch (_) {
       if (cachedJson != null) {
-        return UserModel.fromJson(cachedJson);
+        return _hydrateOfflineUser(cachedJson);
       }
       return null;
+    }
+  }
+
+  @override
+  Future<UserEntity> updateAvatar({
+    required UserEntity currentUser,
+    String? avatarData,
+    bool clearAvatar = false,
+  }) async {
+    final nextAvatar = clearAvatar ? null : avatarData?.trim();
+    await _localStorage.saveUserAvatar(
+      currentUser.id,
+      nextAvatar,
+      isDirty: true,
+    );
+    final localUpdated = currentUser.copyWith(
+      avatarData: nextAvatar,
+      clearAvatar: clearAvatar || nextAvatar == null,
+    );
+
+    try {
+      final remoteUpdated = await _remote.updateProfile(
+        avatarData: nextAvatar,
+        clearAvatar: clearAvatar,
+      );
+      await _localStorage.saveUserAvatar(
+        remoteUpdated.id,
+        remoteUpdated.avatarData,
+        isDirty: false,
+      );
+      await _secureStorage.saveUserJson(
+        remoteUpdated.toJson(includeAvatar: false),
+      );
+      return remoteUpdated;
+    } catch (_) {
+      // Offline-first: simpan perubahan lokal & sinkronkan ketika kembali online
+      return localUpdated;
     }
   }
 

@@ -18,6 +18,8 @@ public class User
     [MaxLength(100)]
     public string DisplayName { get; set; } = string.Empty;
 
+    public string? AvatarData { get; set; }
+
     public int Level { get; set; } = 1;
     public int TotalPoints { get; set; } = 0;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
