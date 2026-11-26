@@ -95,7 +95,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             CozyTextField(
                               controller: _emailController,
                               label: 'Email',
-                              hintText: 'nama@kampus.ac.id',
+                              hintText: 'nama@email.com',
                               prefixIcon: Icons.mail_outline_rounded,
                               keyboardType: TextInputType.emailAddress,
                               textInputAction: TextInputAction.next,
@@ -104,7 +104,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 if (text.isEmpty) {
                                   return 'Email wajib diisi';
                                 }
-                                if (!text.contains('@') || !text.contains('.')) {
+                                if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$')
+                                    .hasMatch(text)) {
                                   return 'Format email tidak valid';
                                 }
                                 return null;
